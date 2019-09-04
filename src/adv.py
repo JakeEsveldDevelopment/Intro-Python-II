@@ -54,6 +54,7 @@ inpStart = input()
 def input1():
     print("What would you like to do?")
     print("Look around [i]")
+    print("Check inventory [c]")
     print("Move to another room [t]")
     print("Quit game [q]")
     inpChoice = input()
@@ -176,6 +177,20 @@ def gameloop(player, first):
     elif inpChoice == "q":
         print("See you soon!")
         exit()
+    elif inpChoice == "c":
+        if player.items == None:
+            print("You don't have anything in your inventory at this time.")
+            print("Press any key to continue")
+            input()
+            gameloop(player, False)
+        else:
+            print("You take a look in your inventory...")
+            print("This is what you find:")
+            for i in player.items:
+                print(f"{i.name} - {i.desc}")
+            print("Press any key to continue")
+            input()
+            gameloop(player, False)
     else:
         print("Invalid selection. Please try again.")
         gameloop(player, False)
