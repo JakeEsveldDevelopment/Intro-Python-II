@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -37,6 +38,15 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 
+print("Welcome to the Python Adventures!")
+print("Would you like to start the game? Y/N: ")
+inpStart = input()
+
+
+def gameloop(player):
+    print("Game loop")
+    return True
+
 # Make a new player object that is currently in the 'outside' room.
 
 # Write a loop that:
@@ -49,3 +59,14 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+if(inpStart.lower() == "n"):
+    print("Goodbye!")
+    exit()
+else:
+    print("What would you like your name to be?")
+    inpName = input()
+    player = Player(inpName, room["foyer"])
+    gameloop(player)
+    
