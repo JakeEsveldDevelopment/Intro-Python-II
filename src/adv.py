@@ -88,7 +88,7 @@ def inputMove(currentRoom: Room):
         return currentRoom.e_to
     else:
         print("Invalid choice, please try again")
-        inputMove(currentRoom)
+        gameloop(player, False)
 
 
 def gameloop(player, first):
@@ -107,6 +107,22 @@ def gameloop(player, first):
             inpChoice = inputMove(player.currentRoom)
             player.currentRoom = inpChoice
             gameloop(player, False)
+        elif inpChoice == "q":
+            print("See you soon!")
+            exit()
+        else:
+            print("Invalid selection. Please try again.")
+            gameloop(player, False)
+    elif inpChoice == "t":
+        inpChoice = inputMove(player.currentRoom)
+        player.currentRoom = inpChoice
+        gameloop(player, False)
+    elif inpChoice == "q":
+        print("See you soon!")
+        exit()
+    else:
+        print("Invalid selection. Please try again.")
+        gameloop(player, False)
 
         
 
