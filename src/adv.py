@@ -86,11 +86,24 @@ def inputLook(currentRoom: Room):
         else:
             try:
                 print(currentRoom.items[int(inpChoice) - 1].desc)
+                print("Take item [t]")
                 print("Go Back [g]")
-                inpChoice = input()
-                if inpChoice.lower() == "g":
+                inpChoice2 = input()
+               
+                if inpChoice2.lower() == "g":
+                    inputLook(currentRoom)
+                elif inpChoice2.lower() == "t":
+                    print(f"You pick up the {currentRoom.items[int(inpChoice) -1].name} and put it in your inventory")
+                    if player.items == None:
+                        player.items = [currentRoom.items[int(inpChoice) - 1]]
+                    else:
+                        player.items.append(currentRoom.items[int(inpChoice) - 1])
+                    currentRoom.items.remove(currentRoom.items[int(inpChoice) - 1])
+                    print("Press any key to continue.")
+                    input()
                     inputLook(currentRoom)
                 else:
+                    print(inpChoice.lower())
                     print("Invalid selection. Please try again.")
                     gameloop(player, False)
             except ValueError:
