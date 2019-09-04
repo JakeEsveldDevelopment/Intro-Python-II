@@ -57,30 +57,43 @@ def input2():
     inpChoice = input()
     return inpChoice.lower()
 
-def inputMove(currentRoom):
+def inputMove(currentRoom: Room):
     print("You look in all directions, and it seems the places you can get to from here are:")
     w_available = False
     e_available = False
     n_available = False
     s_available = False
     if currentRoom.n_to != None:
-        print(currentRoom.n_to.name + "[n]")
+        print(currentRoom.n_to.name + " [n]")
         n_available = True
     if currentRoom.s_to != None:
-        print(currentRoom.s_to.name + "[s]")
+        print(currentRoom.s_to.name + " [s]")
         s_available = True
     if currentRoom.e_to != None:
-        print(currentRoom.e_to.name + "[e]")
+        print(currentRoom.e_to.name + " [e]")
         e_available = True
     if currentRoom.w_to != None:
-        print(currentRoom.w_to.name + "[w]")
+        print(currentRoom.w_to.name + " [w]")
         w_available = True
+
+    print("Where would you like to go?")
+    inpChoice = input()
+    if inpChoice.lower() == "n" and n_available == True:
+        return currentRoom.n_to
+    elif inpChoice.lower() == "s" and s_available == True:
+        return currentRoom.s_to
+    elif inpChoice.lower() == "w" and w_available == True:
+        return currentRoom.w_to
+    elif inpChoice.lower() == "e" and e_available == True:
+        return currentRoom.e_to
+    else:
+        print("Invalid choice, please try again")
+        inputMove(currentRoom)
 
 
 def gameloop(player, first):
     if first == True:
         print(f"Welcome, {player.name}! to the wonderful adventures of Python!")
-        first = False
     
     print(f"You take a look around, and it appears that you are in the {player.currentRoom.name}")
     inpChoice = input1()
@@ -91,7 +104,9 @@ def gameloop(player, first):
         inpChoice = input2()
         
         if inpChoice == "t":
-            inputMove(player.currentRoom)
+            inpChoice = inputMove(player.currentRoom)
+            player.currentRoom = inpChoice
+            gameloop(player, False)
 
         
 
