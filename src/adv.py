@@ -186,11 +186,25 @@ def gameloop(player, first):
         else:
             print("You take a look in your inventory...")
             print("This is what you find:")
+            counter = 1
             for i in player.items:
-                print(f"{i.name} - {i.desc}")
-            print("Press any key to continue")
-            input()
-            gameloop(player, False)
+                print(f"{i.name} - {i.desc}     [{counter}] - drop")
+                counter += 1
+            print("Go back [g]")
+            inpChoice = input()
+            if inpChoice.lower() == "g":
+                gameloop(player, False)
+            else:
+                try:
+                    print(f"You have removed {player.items[int(inpChoice) - 1].name} from your inventory")
+                    player.items.pop(int(inpChoice) - 1)
+                    print("Press any key to continue")
+                    input()
+                    gameloop(player, False)
+                except ValueError:
+                    print("Invalid selection. Please try again.")
+                    gameloop(player, False)
+
     else:
         print("Invalid selection. Please try again.")
         gameloop(player, False)
