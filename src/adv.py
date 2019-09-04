@@ -1,25 +1,34 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
 room = {
     'outside cave entrance':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons",
+                     [Item("Rock", "It's not very big, but it looks like it could do some damage if need be"),
+                     Item("Piece of paper", "It looks like it once had some scribbles on it, but now it is far from legible")]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""",
+[Item("Candlestick", "I wonder if this is what the butler did it with...."),
+Item("Journal", "It's not very polite to read other peoples personal thoughts."),
+Item("Lost Shoe", "I wonder where the owner is?"),
+Item("Broken wine glass", "It looks like there was some sort of accident...")]),
 
     'grand overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""", None),
 
     'narrow passage':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""",
+[Item("Loose electrical cable", "Now that doesn't seem very safe")]),
 
     'treasure chamber': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""",
+[Item("I.O.U.", "It says, 'Sorry about taking all the loot, I need it for my dogs surgery.'")]),
 }
 
 
@@ -52,10 +61,42 @@ def input1():
 
 def input2():
     print("What would you like to do?")
+    print("Look for items [l]")
     print("Move to another room [t]")
     print("Quit game [q]")
     inpChoice = input()
     return inpChoice.lower()
+
+def inputLook(currentRoom: Room):
+    if currentRoom.items == None:
+        print("You look around, but you can't find anything of interest.")
+        print("Press any key to return")
+        input()
+        gameloop(player, False)
+    else:
+        print("You take a look around and you find:")
+        counter = 1
+        for i in currentRoom.items:
+            print(i.name + f"     [{counter}] - inspect")
+            counter += 1
+        print("Go back [g]")
+        inpChoice = input()
+        if inpChoice.lower() == "g":
+            gameloop(player, False)
+        else:
+            try:
+                print(currentRoom.items[int(inpChoice) - 1].desc)
+                print("Go Back [g]")
+                inpChoice = input()
+                if inpChoice.lower() == "g":
+                    inputLook(currentRoom)
+                else:
+                    print("Invalid selection. Please try again.")
+                    gameloop(player, False)
+            except ValueError:
+                print("Invalid selection. Please try again.")
+                gameloop(player, False)
+
 
 def inputMove(currentRoom: Room):
     print("You look in all directions, and it seems the places you can get to from here are:")
@@ -110,6 +151,8 @@ def gameloop(player, first):
         elif inpChoice == "q":
             print("See you soon!")
             exit()
+        elif inpChoice == "l":
+            inputLook(player.currentRoom)
         else:
             print("Invalid selection. Please try again.")
             gameloop(player, False)
